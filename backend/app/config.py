@@ -32,7 +32,7 @@ class Settings(BaseSettings):
     cors_origins: str = "http://localhost:5173,http://localhost:3000,http://127.0.0.1:5173,http://127.0.0.1:3000"
 
     # 高德地图API配置
-    amap_api_key: str = ""
+    vite_amap_web_key: str = ""
 
     # Unsplash API配置
     unsplash_access_key: str = ""
@@ -71,8 +71,8 @@ def validate_config():
     errors = []
     warnings = []
 
-    if not settings.amap_api_key:
-        errors.append("AMAP_API_KEY未配置")
+    if not settings.vite_amap_web_key:
+        errors.append("VITE_AMAP_WEB_KEY未配置")
 
     # HelloAgentsLLM会自动从LLM_API_KEY读取,不强制要求OPENAI_API_KEY
     llm_api_key = os.getenv("LLM_API_KEY") or os.getenv("OPENAI_API_KEY")
@@ -97,7 +97,7 @@ def print_config():
     print(f"应用名称: {settings.app_name}")
     print(f"版本: {settings.app_version}")
     print(f"服务器: {settings.host}:{settings.port}")
-    print(f"高德地图API Key: {'已配置' if settings.amap_api_key else '未配置'}")
+    print(f"高德地图API Key: {'已配置' if settings.vite_amap_web_key else '未配置'}")
 
     # 检查LLM配置
     llm_api_key = os.getenv("LLM_API_KEY") or os.getenv("OPENAI_API_KEY")

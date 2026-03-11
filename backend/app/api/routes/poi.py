@@ -91,12 +91,13 @@ async def search_poi(keywords: str, city: str = "北京"):
     summary="获取景点图片",
     description="根据景点名称从Unsplash获取图片"
 )
-async def get_attraction_photo(name: str):
+async def get_attraction_photo(name: str, city: Optional[str] = None):
     """
     获取景点图片
 
     Args:
         name: 景点名称
+        city: 所在城市(用于提升搜索准确率)
 
     Returns:
         图片URL
@@ -104,12 +105,33 @@ async def get_attraction_photo(name: str):
     try:
         unsplash_service = get_unsplash_service()
 
-        # 搜索景点图片
-        photo_url = unsplash_service.get_photo_url(f"{name} China landmark")
+        import pypinyin
+        
+        # 将景点名称转为无声调的拼音 (例如: 钟楼 -> zhong lou)
+        pinyin_list = pypinyin.pinyin(name, style=pypinyin.Style.NORMAL)
+        pinyin_name = "".join([p[0] for p in pinyin_list])
+        
+        # 尝试 1: 景点拼音 + China
+        query_attraction = f"{pinyin_name} China"
+        photo_url = unsplash_service.get_photo_url(query_attraction)
 
         if not photo_url:
-            # 如果没找到,尝试只用景点名称搜索
-            photo_url = unsplash_service.get_photo_url(name)
+            # 尝试 2: 如果有城市参数，使用真实的城市拼音做兜底
+            if city:
+                city_pinyin_list = pypinyin.pinyin(city, style=pypinyin.Style.NORMAL)
+                city_pinyin = "".join([p[0] for p in city_pinyin_list])
+            else:
+                # 非常弱的备用方案(当city为空时)
+                city_prefix = name[:2]
+                city_pinyin_list = pypinyin.pinyin(city_prefix, style=pypinyin.Style.NORMAL)
+                city_pinyin = "".join([p[0] for p in city_pinyin_list])
+            
+            query_city = f"{city_pinyin} China landmark"
+            photo_url = unsplash_service.get_photo_url(query_city)
+            
+        if not photo_url:
+            # 尝试 3: 最泛的兜底，保证一定有图
+            photo_url = unsplash_service.get_photo_url("beautiful ancient architecture China")
 
         return {
             "success": True,

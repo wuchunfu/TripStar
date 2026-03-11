@@ -1678,7 +1678,7 @@ const loadAttractionPhotos = async () => {
 
   tripPlan.value.days.forEach(day => {
     day.attractions.forEach(attraction => {
-      const promise = fetch(`${apiBase}/api/poi/photo?name=${encodeURIComponent(attraction.name)}`)
+      const promise = fetch(`${apiBase}/api/poi/photo?name=${encodeURIComponent(attraction.name)}&city=${encodeURIComponent(tripPlan.value.city)}`)
         .then(res => res.json())
         .then(data => {
           if (data.success && data.data.photo_url) {
