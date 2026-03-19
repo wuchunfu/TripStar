@@ -250,12 +250,10 @@ const sendChatMessage = async () => {
 <style scoped lang="scss">
 .ai-chat-floating {
   position: fixed;
-  left: 38px;
-  bottom: 58px;
-//   width: 260px;
-//   height: 260px;
+  left: 8px;
+  bottom: 8px;
   z-index: 1000;
-  transform: scale(0.39);
+  transform: scale(0.3);
 }
 
 .container-ai-input {
@@ -541,7 +539,8 @@ const sendChatMessage = async () => {
 
   p {
     margin: 0;
-    font-size: 32px;
+    font-size: 48px;
+    font-weight: 600;
   }
 }
 
@@ -555,8 +554,9 @@ const sendChatMessage = async () => {
 .card .chat .chat-bot .chat-suggestion {
   border: none;
   border-radius: 20px;
-  padding: 8px 16px;
-  font-size: 30px;
+  padding: 12px 24px;
+  font-size: 42px;
+  font-weight: 500;
   background-color: #f5593d;
   border-color: #f5593d;
   color: #ffffff;
@@ -574,11 +574,12 @@ const sendChatMessage = async () => {
 
 .card .chat .chat-bot .chat-msg {
   max-width: 92%;
-  font-size: 29px;
-  line-height: 1.5;
-  border-radius: 20px;
-  padding: 8px 16px;
-  color: #3f3f3f;
+  font-size: 44px;
+  font-weight: 500;
+  line-height: 1.6;
+  border-radius: 24px;
+  padding: 16px 24px;
+  color: #2c2c2c;
   background: #f3f6fd;
   white-space: pre-wrap;
   word-break: break-word;
@@ -634,10 +635,10 @@ const sendChatMessage = async () => {
   width: 100%;
   min-height: 156px;
   max-height: 178px;
-  color: #8b8b8b;
+  color: #4a4a4a;
   font-family: sans-serif;
-  font-size: 36px;
-  font-weight: 400;
+  font-size: 48px;
+  font-weight: 500;
   padding: 10px;
   resize: none;
   outline: none;

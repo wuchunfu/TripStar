@@ -2369,7 +2369,7 @@ const initMap = async () => {
       zoom: 12,
       center: [116.397128, 39.916527], // 默认中心点(北京)
       viewMode: '3D',
-      mapStyle: 'amap://styles/grey'
+      mapStyle: 'amap://styles/darkblue'
     })
 
     // 添加景点标记
