@@ -9,7 +9,7 @@ import type {
 } from '@/types'
 import { i18n } from '@/i18n'
 
-const ENV_API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000'
+const ENV_API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? ''
 const ENV_AMAP_WEB_JS_KEY = import.meta.env.VITE_AMAP_WEB_JS_KEY ?? ''
 const RUNTIME_API_BASE_STORAGE_KEY = 'tripstar.runtime.api_base_url'
 const RUNTIME_AMAP_WEB_JS_KEY_STORAGE_KEY = 'tripstar.runtime.amap_web_js_key'
@@ -21,8 +21,8 @@ const DEFAULT_RUNTIME_BACKEND_SETTINGS: BackendRuntimeSettings = {
   google_maps_proxy: '',
   xhs_cookie: '',
   openai_api_key: '',
-  openai_base_url: 'https://api.openai.com/v1',
-  openai_model: 'gpt-4',
+  openai_base_url: '',
+  openai_model: '',
 }
 
 export const RUNTIME_SETTINGS_UPDATED_EVENT = 'tripstar:runtime-settings-updated'
@@ -35,7 +35,18 @@ const normalizeBaseUrl = (value: string | null | undefined): string => {
 
 const normalizeText = (value: unknown): string => String(value ?? '').trim()
 
-const DEFAULT_API_BASE_URL = normalizeBaseUrl(ENV_API_BASE_URL) || 'http://localhost:8000'
+const resolveDefaultApiBaseUrl = (): string => {
+  const fromEnv = normalizeBaseUrl(ENV_API_BASE_URL)
+  if (fromEnv) return fromEnv
+  // 同源部署（Docker / 云端）：API 与前端在同一 origin 下
+  if (typeof window !== 'undefined' && window.location) {
+    return normalizeBaseUrl(window.location.origin) || ''
+  }
+  // 仅本地开发 fallback
+  return 'http://localhost:8000'
+}
+
+const DEFAULT_API_BASE_URL = resolveDefaultApiBaseUrl()
 const DEFAULT_AMAP_WEB_JS_KEY = normalizeText(ENV_AMAP_WEB_JS_KEY)
 
 interface SubmitTripPlanResponse {
